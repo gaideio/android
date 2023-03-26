@@ -43,10 +43,10 @@ public class LoginActivity extends BaseActivity implements ContractLogin.Contrac
     private void saveToSharedPreferences(GoogleSignInAccount account) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.edit().putBoolean("loggedin", true).apply();
-        prefs.edit().putString("name", account.getDisplayName()).apply();
-        prefs.edit().putString("email", account.getEmail()).apply();
-        prefs.edit().putString("photo", String.valueOf(account.getPhotoUrl())).apply();
-        prefs.edit().putString("token", account.getIdToken()).apply();
+//        prefs.edit().putString("name", account.getDisplayName()).apply();
+//        prefs.edit().putString("email", account.getEmail()).apply();
+//        prefs.edit().putString("photo", String.valueOf(account.getPhotoUrl())).apply();
+//        prefs.edit().putString("token", account.getIdToken()).apply();
     }
 
     private void rerouteToMain() {

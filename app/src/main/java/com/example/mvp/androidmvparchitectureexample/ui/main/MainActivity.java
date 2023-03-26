@@ -2,7 +2,9 @@ package com.example.mvp.androidmvparchitectureexample.ui.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.view.Menu;
@@ -20,6 +22,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.mvp.androidmvparchitectureexample.R;
 import com.example.mvp.androidmvparchitectureexample.ui.chat.ChatActivity;
+import com.example.mvp.androidmvparchitectureexample.ui.login.LoginActivity;
+import com.example.mvp.androidmvparchitectureexample.ui.profile.ProfileActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -70,6 +74,40 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
+    private void setNavigationViewListener() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navview);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        switch (item.getItemId()) {
+
+            case R.id.profile: {
+                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(i);
+                break;
+            }
+
+            case R.id.newchat: {
+                Toast.makeText(this, "New chat", Toast.LENGTH_SHORT).show();
+                break;
+            }
+
+            case R.id.logout: {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                Toast.makeText(this, "You have been logged out", Toast.LENGTH_SHORT).show();
+                prefs.edit().putBoolean("loggedin", false).apply();
+                Intent ilogout = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(ilogout);
+            }
+        }
+        //close navigation drawer
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,24 +135,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             openSomeActivityForResult();
         });
 
+        setNavigationViewListener();
+
+
         drawerLayout = findViewById(R.id.my_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
         drawerLayout.setOnClickListener(click -> Toast.makeText(this, "What do do do?", Toast.LENGTH_SHORT).show());
-//        drawerLayout.findViewById(R.id.logout).setOnClickListener(click -> {
-//            Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-//            startActivity(i);
-//        });
-//
-//        drawerLayout.findViewById(R.id.logout).setOnClickListener(click -> {
-//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//            Toast.makeText(this, "You have been logged out", Toast.LENGTH_SHORT).show();
-//            prefs.edit().putBoolean("loggedin", false).apply();
-//            Intent ilogout = new Intent(getApplicationContext(), LoginActivity.class);
-//            startActivity(ilogout);
-//        });
     }
 
     @Override
@@ -149,15 +178,5 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        Toast.makeText(this, "adsadadasdsadasdasdasdasdasdas", Toast.LENGTH_SHORT).show();
-
-        return true;
     }
 }
