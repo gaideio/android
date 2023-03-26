@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">gaide.io</string>
+    <string name="try_again_btn">Retry</string>
+    <string name="message_error_has_occurred">An error has occurred</string>
+    <string name="load_movies">Load Movies</string>
+    <string name="empty">empty</string>
+    <string name="login_signin">Sign in with Google Play</string>
+    <string name="preprompt_start">Start</string>
+    <string name="asksomething">Ask something</string>
+    <string name="edittrip_update">Update</string>
+    <string name="profile_clear">Clear</string>
+    <string name="profile_save">Save</string>
+    <string name="preferences_museums">Museums</string>
+    <string name="preferences_parks">Parks</string>
+    <string name="preferences_historicsites">Historic Sites</string>
+    <string name="preferences_restaurants">Restaurants</string>
+    <string name="preferences_culture">Culture</string>
+    <string name="profile_fullname">Enter your full name here</string>
+    <string name="tap_mic_and_speek">Tap Mic and Speak</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="lorem_ipsum">Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum</string>
+    <string name="server_client_id">634635040323-u6h3j09uml153ifr62ibqhlghl5gq9ao.apps.googleusercontent.com</string>
+</resources>

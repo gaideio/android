@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#004AAD"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:padding="20pt">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10pt"
+        android:src="@drawable/alexpico"
+        app:civ_border_color="@android:color/transparent"
+        app:civ_border_width="5dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2pt"
+        android:text="Full name"
+        android:textColor="#ffffff"
+        android:textSize="10pt" />
+
+    <EditText
+        android:id="@+id/fulltext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:enabled="false"
+        android:hint="Enter full name here" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10pt"
+        android:layout_marginBottom="2pt"
+        android:text="Preferences"
+        android:textColor="#ffffff"
+        android:textSize="10pt" />
+
+    <CheckBox
+        android:id="@+id/museums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Museums"
+        android:textColor="#ffffff" />
+
+    <CheckBox
+        android:id="@+id/parks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Parks"
+        android:textColor="#ffffff" />
+
+    <CheckBox
+        android:id="@+id/historicsites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Historic Sites"
+        android:textColor="#ffffff" />
+
+    <CheckBox
+        android:id="@+id/restaurants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Restaurants"
+        android:textColor="#ffffff" />
+
+    <CheckBox
+        android:id="@+id/culture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Culture"
+        android:textColor="#ffffff" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10pt"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/clearbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="start"
+            android:foregroundGravity="left"
+            android:text="Clear"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/editbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="start"
+            android:foregroundGravity="left"
+            android:text="Edit"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/savebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="end"
+            android:foregroundGravity="right"
+            android:text="Save"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="start"
+        android:layout_marginTop="10pt"
+        android:foregroundGravity="left"
+        android:text="Log out"
+        android:visibility="visible" />
+</LinearLayout>

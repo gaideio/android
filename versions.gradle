@@ -1,0 +1,21 @@
+def versions = [:]
+versions.support = '28.0.0'
+versions.dagger = '2.45'
+versions.butterknif = '10.2.3'
+versions.junit = '4.13.2'
+versions.espresso = '3.0.2'
+versions.retrofit = '2.9.0'
+versions.constraint_layout = '2.0.4'
+versions.glide = '4.8.0'
+versions.android_gradle_plugin = '3.2.1'
+versions.rxjava = '2.2.21'
+versions.rx_android = '2.1.1'
+versions.archVersion = '1.1.1'
+ext.versions = versions
+
+def build_versions = [:]
+build_versions.min_sdk = 19
+build_versions.target_sdk = 32
+build_versions.build_tools = "32.0.1"
+ext.build_versions = build_versions
+
