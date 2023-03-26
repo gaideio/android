@@ -60,7 +60,11 @@ public class LoginActivity extends BaseActivity implements ContractLogin.Contrac
             saveToSharedPreferences(account);
             rerouteToMain();
         } catch (ApiException e) {
+            System.out.println("ERRORERRORERRORERRORERRORERRORERRORERRORERRORERRORERRORERRORERROR" +
+                    "ERRORERRORERRORERRORERRORERRORERRORERRORERRORERRORERROR");
+            System.out.println(e.getMessage());
             Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
