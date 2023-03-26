@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    // TODO CHANGE URL IN HERE
     compileSdk build_versions.target_sdk
     defaultConfig {
         applicationId "com.example.mvp.androidmvparchitectureexample"

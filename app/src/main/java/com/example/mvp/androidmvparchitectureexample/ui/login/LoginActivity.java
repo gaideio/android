@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -59,6 +60,8 @@ public class LoginActivity extends BaseActivity implements ContractLogin.Contrac
             saveToSharedPreferences(account);
             rerouteToMain();
         } catch (ApiException e) {
+            Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
     }
