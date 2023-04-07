@@ -1,41 +1,23 @@
 /*
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.profile;
 
 public class ProfileResponse {
-    private String name;
-    private String email;
-    private String error;
+    private String fullname;
+//    private String email;
+//    private String error;
 
-    public ProfileResponse(String name, String email, String error) {
-        this.name = name;
-        this.email = email;
-        this.error = error;
+    public ProfileResponse(String fullname) {
+        this.fullname = fullname;
     }
 
-    public String getName() {
-        return name;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 }

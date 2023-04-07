@@ -13,7 +13,7 @@ import io.reactivex.Flowable;
 
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 @Dao

@@ -9,7 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 @Module

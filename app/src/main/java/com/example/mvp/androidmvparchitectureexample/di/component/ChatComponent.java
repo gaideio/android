@@ -7,7 +7,7 @@ import com.example.mvp.androidmvparchitectureexample.ui.chat.ChatActivity;
 import dagger.Component;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 @ChatScope

@@ -1,10 +1,11 @@
 /*
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.login;
 
 public class LoginRequest {
+
     private String email;
 
     public LoginRequest(String email) {
@@ -19,3 +20,4 @@ public class LoginRequest {
         this.email = email;
     }
 }
+

@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 public class NewsPresenter extends BasePresenter<ContractNews.ContractView> implements ContractNews.ContractPresenter {

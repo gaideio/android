@@ -1,3 +1,7 @@
+/*
+ * ALL RIGHTS RESERVED
+ */
+
 package com.example.mvp.androidmvparchitectureexample.ui.profile;
 
 import android.content.Context;
@@ -5,16 +9,16 @@ import android.util.Log;
 
 import com.example.mvp.androidmvparchitectureexample.data.local.LocalDataSource;
 import com.example.mvp.androidmvparchitectureexample.data.remote.RemoteDataSource;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.Profile;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.UpdateProfile;
 import com.example.mvp.androidmvparchitectureexample.ui.base.BasePresenter;
 import com.example.mvp.androidmvparchitectureexample.utils.NetworkUtil;
+
+import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-
-/**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
- */
 
 public class ProfilePresenter extends BasePresenter<ContractProfile.ContractView> implements ContractProfile.ContractPresenter {
 
@@ -29,19 +33,20 @@ public class ProfilePresenter extends BasePresenter<ContractProfile.ContractView
     }
 
     @Override
-    public void getProfile(Context context) {
+    public void getProfile(Context context, String jwttoken) {
         if (NetworkUtil.isNetworkConnected(context)) {
-            getProfileFromApi();
-        } else {
-            getProfileFromDb();
+            getProfileFromApi(jwttoken);
         }
+//        else {
+//            getProfileFromDb();
+//        }
     }
 
     @Override
-    public void getProfileFromApi() {
+    public void getProfileFromApi(String jwttoken) {
         getView().showLoading();
 
-        mDisposable = mRemoteDataSource.getProfile()
+        mDisposable = mRemoteDataSource.getProfile(jwttoken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -52,8 +57,9 @@ public class ProfilePresenter extends BasePresenter<ContractProfile.ContractView
 
                             getView().hideLoading();
                             if (response.isSuccessful()) {
-//                                saveArticles(response.body().getmArticles());
-//                                getView().onArtilesReady(response.body().getmArticles());
+                                Profile profile = new Profile();
+                                profile.setFullname(Objects.requireNonNull(response.body()).getFullname());
+                                getView().onProfileReady(profile);
                             }
                         },
                         throwable -> {
@@ -68,8 +74,50 @@ public class ProfilePresenter extends BasePresenter<ContractProfile.ContractView
     }
 
     @Override
-    public void updateProfile() {
+    public void updateProfile(String jwttoken, String fullname) {
+        getView().showLoading();
 
+        UpdateProfile updateProfile = new UpdateProfile();
+        updateProfile.setFullname(fullname);
+
+        mDisposable = mRemoteDataSource.updateProfile(jwttoken, updateProfile)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (!isViewAttached()) {
+                                return;
+                            }
+
+                            getView().onProfileUpdated(response.isSuccessful());
+
+                            getView().hideLoading();
+                        },
+                        throwable -> {
+                            getView().hideLoading();
+                            Log.e(TAG, throwable.getMessage());
+                        });
+    }
+
+    @Override
+    public void deleteAccount(String jwttoken) {
+        getView().showLoading();
+
+        mDisposable = mRemoteDataSource.deleteAccount(jwttoken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (!isViewAttached()) {
+                                return;
+                            }
+
+                            getView().onAccountDeleted(response.isSuccessful());
+
+                            getView().hideLoading();
+                        },
+                        throwable -> {
+                            getView().hideLoading();
+                            Log.e(TAG, throwable.getMessage());
+                        });
     }
 
     @Override

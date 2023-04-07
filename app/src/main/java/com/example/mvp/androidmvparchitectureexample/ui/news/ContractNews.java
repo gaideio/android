@@ -8,7 +8,7 @@ import com.example.mvp.androidmvparchitectureexample.ui.base.IBaseView;
 import java.util.List;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 public interface ContractNews {

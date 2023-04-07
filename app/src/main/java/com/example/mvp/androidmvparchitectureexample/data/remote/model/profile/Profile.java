@@ -1,5 +1,5 @@
 /*
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.profile;
@@ -7,15 +7,45 @@ package com.example.mvp.androidmvparchitectureexample.data.remote.model.profile;
 import java.util.Objects;
 
 public class Profile {
-    private String fullName;
+    private Boolean isnew;
+    private String fullname;
     private String imgUri;
+    private String access_token;
+
+    public Profile(String fullname, String imgUri, String access_token, Boolean isnew) {
+        this.fullname = fullname;
+        this.imgUri = imgUri;
+        this.access_token = access_token;
+        this.isnew = isnew;
+    }
 
     public Profile() {
     }
 
-    public Profile(String fullName, String imgUri) {
-        this.fullName = fullName;
-        this.imgUri = imgUri;
+    public Boolean getIsnew() {
+        return isnew;
+    }
+
+    public void setIsnew(Boolean isnew) {
+        this.isnew = isnew;
+    }
+
+    public String getAccess_token() {
+        return access_token;
+    }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "fullname='" + fullname + '\'' +
+                ", imgUri='" + imgUri + '\'' +
+                ", access_token='" + access_token + '\'' +
+                ", isnew='" + isnew + '\'' +
+                '}';
     }
 
     @Override
@@ -27,28 +57,20 @@ public class Profile {
             return false;
         }
         Profile profile = (Profile) o;
-        return Objects.equals(fullName, profile.fullName) && Objects.equals(imgUri, profile.imgUri);
+        return Objects.equals(fullname, profile.fullname) && Objects.equals(imgUri, profile.imgUri) && Objects.equals(access_token, profile.access_token) && Objects.equals(isnew, profile.isnew);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullName, imgUri);
+        return Objects.hash(fullname, imgUri, access_token, isnew);
     }
 
-    @Override
-    public String toString() {
-        return "Profile{" +
-                "fullName='" + fullName + '\'' +
-                ", imgUri='" + imgUri + '\'' +
-                '}';
+    public String getFullname() {
+        return fullname;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getImgUri() {

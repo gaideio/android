@@ -1,4 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ ALL RIGHTS RESERVED
+  -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
@@ -16,5 +19,20 @@
             android:id="@+id/logout"
             android:icon="@drawable/logout"
             android:title="@string/log_out" />
+    </group>
+
+    <group android:id="@+id/secondmenu">
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/info"
+            android:title="About us" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/help"
+            android:icon="@drawable/help"
+            android:title="Feedback" />
     </group>
 </menu>

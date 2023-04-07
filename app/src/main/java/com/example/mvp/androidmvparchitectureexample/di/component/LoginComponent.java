@@ -7,7 +7,7 @@ import com.example.mvp.androidmvparchitectureexample.ui.login.LoginActivity;
 import dagger.Component;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 @LoginScope

@@ -15,11 +15,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", "\"http://3.121.183.167:8000/\""
+            buildConfigField "String", "BASE_URL", "\"http://3.121.183.167:8000\""
         }
 
         debug {
-            buildConfigField "String", "BASE_URL", "\"http://3.121.183.167:8000/\""
+            buildConfigField "String", "BASE_URL", "\"http://3.121.183.167:8000\""
         }
     }
 
@@ -39,7 +39,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.fragment:fragment:1.5.5'
+    implementation 'androidx.fragment:fragment:1.5.6'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
     testImplementation "junit:junit:$versions.junit"
@@ -100,4 +100,5 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.shamanland:fonticon:0.1.9'
+    implementation 'com.android.support:design:28.0.0'
 }

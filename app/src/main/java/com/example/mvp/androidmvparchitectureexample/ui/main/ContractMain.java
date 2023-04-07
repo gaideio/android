@@ -1,17 +1,19 @@
+/*
+ * ALL RIGHTS RESERVED
+ */
+
 package com.example.mvp.androidmvparchitectureexample.ui.main;
 
 import android.content.Context;
 
 import com.example.mvp.androidmvparchitectureexample.ui.base.IBaseView;
 
-/**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
- */
-
 public interface ContractMain {
 
     interface ContractPresenter {
         void logout(Context context);
+
+        void deleteChat(String jwttoken);
 
         void openChat();
 
@@ -23,5 +25,6 @@ public interface ContractMain {
     }
 
     interface ContractView extends IBaseView {
+        void onDeleteChat(boolean successful);
     }
 }

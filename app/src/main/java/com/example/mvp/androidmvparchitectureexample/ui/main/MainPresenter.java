@@ -1,17 +1,31 @@
+/*
+ * ALL RIGHTS RESERVED
+ */
+
 package com.example.mvp.androidmvparchitectureexample.ui.main;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.example.mvp.androidmvparchitectureexample.data.local.LocalDataSource;
+import com.example.mvp.androidmvparchitectureexample.data.remote.RemoteDataSource;
 import com.example.mvp.androidmvparchitectureexample.ui.base.BasePresenter;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-/**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
- */
 
 public class MainPresenter extends BasePresenter<ContractMain.ContractView> implements ContractMain.ContractPresenter {
 
     private static final String TAG = MainPresenter.class.getSimpleName();
+
+    LocalDataSource mLocalDataSource;
+    RemoteDataSource mRemoteDataSource;
+
+    public MainPresenter(LocalDataSource mLocalDataSource, RemoteDataSource mRemoteDataSource) {
+        this.mLocalDataSource = mLocalDataSource;
+        this.mRemoteDataSource = mRemoteDataSource;
+    }
 
     public MainPresenter() {
     }
@@ -19,6 +33,30 @@ public class MainPresenter extends BasePresenter<ContractMain.ContractView> impl
     @Override
     public void logout(Context context) {
 
+    }
+
+    @Override
+    public void deleteChat(String jwttoken) {
+        getView().showLoading();
+
+        // delete chat
+
+        mDisposable = mRemoteDataSource.deleteChat(jwttoken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (!isViewAttached()) {
+                                return;
+                            }
+
+                            getView().onDeleteChat(response.isSuccessful());
+
+                            getView().hideLoading();
+                        },
+                        throwable -> {
+                            getView().hideLoading();
+                            Log.e(TAG, throwable.getMessage());
+                        });
     }
 
     @Override

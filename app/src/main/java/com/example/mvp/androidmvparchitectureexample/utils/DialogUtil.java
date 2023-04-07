@@ -9,7 +9,7 @@ import com.example.mvp.androidmvparchitectureexample.R;
 
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 public class DialogUtil {

@@ -1,3 +1,7 @@
+/*
+ * ALL RIGHTS RESERVED
+ */
+
 package com.example.mvp.androidmvparchitectureexample.ui.news;
 
 import android.content.Intent;
@@ -24,10 +28,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-/**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
- */
 
 public class NewsActivity extends BaseActivity implements ContractNews.ContractView, NewsAdapter.OnItemClickListener {
 
@@ -61,7 +61,6 @@ public class NewsActivity extends BaseActivity implements ContractNews.ContractV
     @Override
     protected void setUp() {
         mAdapter = new NewsAdapter(this, new ArrayList<>(), this);
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerview.setLayoutManager(mLayoutManager);
         mRecyclerview.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));

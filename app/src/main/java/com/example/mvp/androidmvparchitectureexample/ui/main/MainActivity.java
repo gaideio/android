@@ -1,3 +1,7 @@
+/*
+ * ALL RIGHTS RESERVED
+ */
+
 package com.example.mvp.androidmvparchitectureexample.ui.main;
 
 import android.app.Activity;
@@ -16,11 +20,14 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.mvp.androidmvparchitectureexample.GaideioApp;
 import com.example.mvp.androidmvparchitectureexample.R;
+import com.example.mvp.androidmvparchitectureexample.ui.about.AboutActivity;
 import com.example.mvp.androidmvparchitectureexample.ui.chat.ChatActivity;
 import com.example.mvp.androidmvparchitectureexample.ui.login.LoginActivity;
 import com.example.mvp.androidmvparchitectureexample.ui.profile.ProfileActivity;
@@ -35,13 +42,17 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
-/**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
- */
+import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+import butterknife.ButterKnife;
+
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, ContractMain.ContractView {
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
+
+    @Inject
+    MainPresenter mPresenter;
+
     TextToSpeech textToSpeech;
     // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
@@ -67,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         int id = item.getItemId();
 
         if (id == R.id.profile) {
+            // TODO WHAT IS THIS DO BITCH??!?? (talking to myself)
             Toast.makeText(this, "asdaasdasdasdsad", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -79,10 +91,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private void newChatMethod() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Delete");
+        alert.setMessage("Are you sure? The current chat will be DELETED.");
+        alert.setPositiveButton("Yes", (dialog, which) -> {
+            mPresenter.deleteChat(getJWTTokenFromSharedPreferences());
+            dialog.dismiss();
+        });
+
+        alert.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        alert.show();
+
+//        TODO NEW CHAT
+    }
+
+    private String getJWTTokenFromSharedPreferences() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return "Bearer " + prefs.getString("jwttoken", null);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
+
+            case R.id.about: {
+                Intent i = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(i);
+                break;
+            }
 
             case R.id.profile: {
                 Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
@@ -91,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
             case R.id.newchat: {
-                Toast.makeText(this, "New chat", Toast.LENGTH_SHORT).show();
+                newChatMethod();
                 break;
             }
 
@@ -99,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 Toast.makeText(this, "You have been logged out", Toast.LENGTH_SHORT).show();
                 prefs.edit().putBoolean("loggedin", false).apply();
+                prefs.edit().clear();
+                prefs.edit().apply();
                 Intent ilogout = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(ilogout);
             }
@@ -112,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        GaideioApp.getMainComponent().inject(this);
+        mPresenter.attachView(this);
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
         textToSpeech = new TextToSpeech(getApplicationContext(), i -> {
@@ -178,5 +221,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(String errorMessage) {
+
+    }
+
+    @Override
+    public void showError(int errorId) {
+
+    }
+
+    @Override
+    public void onDeleteChat(boolean successful) {
+        Toast.makeText(this, "Old Chat deleted", Toast.LENGTH_SHORT).show();
     }
 }

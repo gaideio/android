@@ -1,7 +1,7 @@
 package com.example.mvp.androidmvparchitectureexample.ui.base;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 public interface IBasePresenter<V extends IBaseView> {

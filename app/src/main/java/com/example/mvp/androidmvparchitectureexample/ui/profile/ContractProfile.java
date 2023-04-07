@@ -1,23 +1,26 @@
+/*
+ * ALL RIGHTS RESERVED
+ */
+
 package com.example.mvp.androidmvparchitectureexample.ui.profile;
 
 import android.content.Context;
 
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.Profile;
 import com.example.mvp.androidmvparchitectureexample.ui.base.IBaseView;
-
-/**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
- */
 
 public interface ContractProfile {
 
     interface ContractPresenter {
-        void getProfile(Context context);
+        void getProfile(Context context, String jwttoken);
 
-        void getProfileFromApi();
+        void getProfileFromApi(String jwttoken);
 
         void getProfileFromDb();
 
-        void updateProfile();
+        void updateProfile(String jwttoken, String fullname);
+
+        void deleteAccount(String jwttoken);
 
         void update();
 
@@ -29,6 +32,10 @@ public interface ContractProfile {
     }
 
     interface ContractView extends IBaseView {
-        void onProfileReady();
+        void onProfileReady(Profile profile);
+
+        void onProfileUpdated(Boolean isUpdateSuccessful);
+
+        void onAccountDeleted(Boolean isAccountDeleted);
     }
 }

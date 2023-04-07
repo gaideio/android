@@ -1,11 +1,10 @@
 /*
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.chat;
 
 public class SendToChatResponse {
-
     private String response;
     private String error;
 

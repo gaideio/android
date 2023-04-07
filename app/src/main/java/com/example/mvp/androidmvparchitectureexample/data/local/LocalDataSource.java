@@ -9,7 +9,7 @@ import com.example.mvp.androidmvparchitectureexample.data.local.entities.Article
 import javax.inject.Singleton;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 @Singleton

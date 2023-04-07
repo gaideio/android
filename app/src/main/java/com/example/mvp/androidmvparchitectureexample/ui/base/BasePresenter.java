@@ -3,7 +3,7 @@ package com.example.mvp.androidmvparchitectureexample.ui.base;
 import io.reactivex.disposables.Disposable;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {

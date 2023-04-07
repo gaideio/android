@@ -1,5 +1,5 @@
 /*
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.signup;

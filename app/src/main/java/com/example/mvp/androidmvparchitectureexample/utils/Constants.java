@@ -1,7 +1,7 @@
 package com.example.mvp.androidmvparchitectureexample.utils;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 public class Constants {

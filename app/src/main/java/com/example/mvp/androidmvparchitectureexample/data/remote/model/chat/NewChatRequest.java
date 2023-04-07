@@ -1,5 +1,5 @@
 /*
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.chat;
@@ -9,6 +9,9 @@ public class NewChatRequest {
     private String location;
     private String transport;
     private String time;
+
+    public NewChatRequest() {
+    }
 
     public NewChatRequest(String location, String transport, String time) {
         this.location = location;

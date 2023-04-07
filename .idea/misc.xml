@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/drawable/help.xml" value="0.213" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/drawable/info.xml" value="0.213" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/drawable/settings.xml" value="0.213" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_chat.xml" value="0.25" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_main.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_messages.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_news.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_profile.xml" value="0.2671875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/app_bar_main.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/item_chat.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/item_chat_me.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/item_news.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/message.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/nav_header_main.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/navigation_header.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/view_error.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/menu/activity_main_drawer.xml" value="0.3875" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
-    <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
+    <option name="myDefaultNotNull" value="androidx.annotation.RecentlyNonNull" />
     <option name="myNullables">
       <value>
         <list size="12">
@@ -23,7 +46,7 @@
     </option>
     <option name="myNotNulls">
       <value>
-        <list size="11">
+        <list size="12">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
@@ -35,6 +58,7 @@
           <item index="8" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullType" />
           <item index="9" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullDecl" />
           <item index="10" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.NonNull" />
+          <item index="11" class="java.lang.String" itemvalue="lombok.NonNull" />
         </list>
       </value>
     </option>

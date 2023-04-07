@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 @Component(modules = AppModule.class)

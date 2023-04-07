@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import butterknife.Unbinder;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 public abstract class BaseFragment extends Fragment implements IBaseView {

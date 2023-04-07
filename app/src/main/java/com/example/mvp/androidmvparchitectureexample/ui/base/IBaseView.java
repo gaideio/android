@@ -3,7 +3,7 @@ package com.example.mvp.androidmvparchitectureexample.ui.base;
 import androidx.annotation.StringRes;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 public interface IBaseView {

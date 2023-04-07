@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 import butterknife.Unbinder;
 
 /**
- * ALL RIGHTS RESERVED - ALEXANDROS KOURTIS
+ * ALL RIGHTS RESERVED
  */
 
 public abstract class BaseActivity extends ComponentActivity implements IBaseView {
