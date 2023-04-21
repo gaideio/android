@@ -4,14 +4,16 @@
 
 package com.example.mvp.androidmvparchitectureexample.ui.main;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -19,42 +21,68 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.directions.route.AbstractRouting;
+import com.directions.route.Route;
+import com.directions.route.RouteException;
+import com.directions.route.Routing;
+import com.directions.route.RoutingListener;
 import com.example.mvp.androidmvparchitectureexample.GaideioApp;
 import com.example.mvp.androidmvparchitectureexample.R;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Root;
 import com.example.mvp.androidmvparchitectureexample.ui.about.AboutActivity;
 import com.example.mvp.androidmvparchitectureexample.ui.chat.ChatActivity;
+import com.example.mvp.androidmvparchitectureexample.ui.feedback.FeedbackActivity;
 import com.example.mvp.androidmvparchitectureexample.ui.login.LoginActivity;
 import com.example.mvp.androidmvparchitectureexample.ui.profile.ProfileActivity;
+import com.example.mvp.androidmvparchitectureexample.ui.settings.SettingsActivity;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, ContractMain.ContractView {
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, ContractMain.ContractView, RoutingListener {
+
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
+    protected LatLng start = null;
+    protected LatLng end = null;
+    Location myLocation = null;
+
+    @BindView(R.id.route)
+    FloatingActionButton floatingActionButtonroute;
 
     @Inject
     MainPresenter mPresenter;
-
     TextToSpeech textToSpeech;
-    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -72,22 +100,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 findViewById(R.id.micrecordingbtn).setVisibility(View.GONE);
                 findViewById(R.id.micbtn).setVisibility(View.VISIBLE);
             });
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.profile) {
-            // TODO WHAT IS THIS DO BITCH??!?? (talking to myself)
-            Toast.makeText(this, "asdaasdasdasdsad", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+    private ArrayList<com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Route> myplaces;
+    private ArrayList<LatLng> myplacestest;
+    private GoogleMap mMap;
+    private List<Polyline> polylines = null;
 
     private void setNavigationViewListener() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navview);
+        NavigationView navigationView = findViewById(R.id.navview);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -96,26 +115,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         alert.setTitle("Delete");
         alert.setMessage("Are you sure? The current chat will be DELETED.");
         alert.setPositiveButton("Yes", (dialog, which) -> {
-            mPresenter.deleteChat(getJWTTokenFromSharedPreferences());
+            mPresenter.deleteChat(mPresenter.getStore().getAuthInfo().getJwttoken());
             dialog.dismiss();
         });
 
         alert.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
         alert.show();
-
-//        TODO NEW CHAT
     }
 
-    private String getJWTTokenFromSharedPreferences() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        return "Bearer " + prefs.getString("jwttoken", null);
-    }
-
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
-
             case R.id.about: {
                 Intent i = new Intent(getApplicationContext(), AboutActivity.class);
                 startActivity(i);
@@ -133,19 +145,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
             }
 
+            case R.id.help: {
+                Intent i = new Intent(getApplicationContext(), FeedbackActivity.class);
+                startActivity(i);
+                break;
+            }
+
+            case R.id.settings: {
+                Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(i);
+                break;
+            }
+
             case R.id.logout: {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                Toast.makeText(this, "You have been logged out", Toast.LENGTH_SHORT).show();
-                prefs.edit().putBoolean("loggedin", false).apply();
-                prefs.edit().clear();
-                prefs.edit().apply();
-                Intent ilogout = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(ilogout);
+                logout();
             }
         }
-        //close navigation drawer
+
+        // close navigation drawer
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logout() {
+        mPresenter.getStore().getAuthInfo().clear();
+        Intent ilogout = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(ilogout);
     }
 
     @Override
@@ -155,16 +180,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ButterKnife.bind(this);
         GaideioApp.getMainComponent().inject(this);
         mPresenter.attachView(this);
-        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        supportMapFragment.getMapAsync(this);
         textToSpeech = new TextToSpeech(getApplicationContext(), i -> {
             if (i != TextToSpeech.ERROR) {
                 textToSpeech.setLanguage(Locale.US);
             }
         });
-        findViewById(R.id.menubtn).setOnClickListener(click -> {
-            drawerLayout.openDrawer(GravityCompat.START);
-        });
+        findViewById(R.id.menubtn).setOnClickListener(click -> drawerLayout.openDrawer(GravityCompat.START));
 
         findViewById(R.id.chatbtn).setOnClickListener(click -> {
             Intent i = new Intent(getApplicationContext(), ChatActivity.class);
@@ -180,20 +201,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setNavigationViewListener();
 
-
         drawerLayout = findViewById(R.id.my_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        drawerLayout.setOnClickListener(click -> Toast.makeText(this, "What do do do?", Toast.LENGTH_SHORT).show());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
-        return true;
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        Objects.requireNonNull(mapFragment).getMapAsync(this);
+        mPresenter.getRoute(mPresenter.getStore().getAuthInfo().getJwttoken());
     }
 
     public void openSomeActivityForResult() {
@@ -211,11 +227,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onActivityResult(int requestCode, int resultCode,
                                     @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-
     }
 
     @Override
@@ -247,4 +258,160 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onDeleteChat(boolean successful) {
         Toast.makeText(this, "Old Chat deleted", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void routeReady(Root root) {
+        if (root != null) {
+            // TODO
+        }
+    }
+
+    //to get user location
+    private void getMyLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+
+        mMap.setOnMyLocationChangeListener(location -> {
+            myLocation = location;
+            LatLng ltlng = new LatLng(location.getLatitude(), location.getLongitude());
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(
+                    ltlng, 16f);
+            mMap.animateCamera(cameraUpdate);
+        });
+
+        //get destination location when user click on map
+        mMap.setOnMapClickListener(latLng -> {
+            mMap.clear();
+        });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        getMyLocation();
+    }
+
+    // function to find Routes.
+    public void Findroutes() {
+        if (mPresenter.getStore().getRoot().getRoute() != null) {
+            myplacestest = new ArrayList<>();
+//        if (mPresenter.getStore().getRoot().getRoute() == null) {
+//            mPresenter.getRoute(mPresenter.getStore().getAuthInfo().getJwttoken());
+//        } else {
+            List<LatLng> waypoints = new ArrayList<>();
+
+            start = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+            end = new LatLng(mPresenter.getStore().getRoot().getRoute().get(mPresenter.getStore().getRoot().getRoute().size() - 1).getCoordinates().getLat(), mPresenter.getStore().getRoot().getRoute().get(mPresenter.getStore().getRoot().getRoute().size() - 1).getCoordinates().getLng());
+            waypoints.add(start);
+            mPresenter.getStore().getRoot().getRoute().forEach(route -> {
+                waypoints.add(new LatLng(route.getCoordinates().getLat(), route.getCoordinates().getLng()));
+            });
+//
+            for (int i = 0; i < mPresenter.getStore().getRoot().getRoute().size() - 1; i++) {
+                myplacestest.add(new LatLng(mPresenter.getStore().getRoot().getRoute().get(i).getCoordinates().getLat(), mPresenter.getStore().getRoot().getRoute().get(i).getCoordinates().getLng()));
+            }
+
+//        mPresenter.getStore().getRoot().getRoute().forEach(route -> {
+//            waypoints.add(new LatLng(route.getCoordinates().getLat(), route.getCoordinates().getLng()));
+//        });
+
+            Routing routing;
+            routing = new Routing.Builder()
+                    .travelMode(AbstractRouting.TravelMode.WALKING)
+                    .withListener(this)
+                    .alternativeRoutes(true)
+                    .waypoints(waypoints)
+                    .key("AIzaSyCDSSLtHiiRUttMp1DtCHOXPvoQUzbiTXg")
+                    .build();
+            routing.execute();
+        }
+    }
+//    }
+//    }
+
+    @Override
+    public void onRoutingFailure(RouteException e) {
+        // The Routing request failed
+        if (e != null) {
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Something went wrong, Try again", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRoutingStart() {
+    }
+
+    // If Route finding success..
+    @Override
+    public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
+        Toast.makeText(MainActivity.this, "Routing...", Toast.LENGTH_LONG).show();
+
+        CameraUpdateFactory.newLatLng(start);
+        CameraUpdateFactory.zoomTo(16);
+        if (polylines != null) {
+            polylines.clear();
+        }
+        PolylineOptions polyOptions = new PolylineOptions();
+
+        LatLng polylineStartLatLng = null;
+        LatLng polylineEndLatLng = null;
+
+        polylines = new ArrayList<>();
+        for (int i = 0; i < route.size(); i++) {
+            if (i == shortestRouteIndex) {
+                polyOptions.color(getResources().getColor(R.color.quantum_googred));
+                polyOptions.width(7);
+                polyOptions.addAll(route.get(shortestRouteIndex).getPoints());
+                Polyline polyline = mMap.addPolyline(polyOptions);
+                polylineStartLatLng = polyline.getPoints().get(0);
+                int k = polyline.getPoints().size();
+                polylineEndLatLng = polyline.getPoints().get(k - 1);
+                polylines.add(polyline);
+            }
+        }
+
+        MarkerOptions startMarker = new MarkerOptions();
+        startMarker.position(polylineStartLatLng);
+        startMarker.title("Start");
+        mMap.addMarker(startMarker);
+
+        MarkerOptions startMarker1 = new MarkerOptions();
+        startMarker1.position(polylineEndLatLng);
+        startMarker1.title("End");
+        mMap.addMarker(startMarker1);
+
+        myplacestest.forEach(myplace -> {
+            MarkerOptions startMar = new MarkerOptions();
+            startMar.position(new LatLng(myplace.latitude, myplace.longitude));
+            startMar.title("bitch");
+            mMap.addMarker(startMar);
+        });
+    }
+
+    @Override
+    public void onRoutingCancelled() {
+        Toast.makeText(this, "Error sorry : (", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @OnClick(R.id.route)
+    public void clickroute() {
+        Findroutes();
+    }
 }
+

@@ -18,7 +18,7 @@ public interface ContractProfile {
 
         void getProfileFromDb();
 
-        void updateProfile(String jwttoken, String fullname);
+        void updateProfile(String jwttoken, String name);
 
         void deleteAccount(String jwttoken);
 

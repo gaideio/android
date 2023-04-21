@@ -15,22 +15,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Make new chat"
+        android:text="Talk to your Gaide"
         android:translationZ="1dp"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/thisischat"
+    <LinearLayout
+        android:id="@+id/infolayer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="This is chat"
-        android:textSize="15dp" />
+        android:layout_height="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/routetext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="15dp" />
+
+    </LinearLayout>
 
     <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/chat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/thisischat"
+        android:layout_below="@id/infolayer"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="80dp"
         tools:context="ma.clicwinapp.clickwin.clickwinapp.ui.dashboard.DashboardActivity">

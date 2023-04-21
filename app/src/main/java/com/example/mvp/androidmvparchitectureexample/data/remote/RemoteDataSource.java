@@ -4,15 +4,17 @@
 
 package com.example.mvp.androidmvparchitectureexample.data.remote;
 
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.Feedback;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.Messages;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.News;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.ChatResponse;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiChat;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiNewChat;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiWriteToChat;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.Message;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.NewChatRequest;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.NewChatResponse;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.SendToChatResponse;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Root;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.login.ModelLoginRequest;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.HarisApiUpdateProfile;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.Profile;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.ProfileResponse;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.UpdateProfile;
@@ -56,16 +58,20 @@ public class RemoteDataSource {
         return mRemoteService.deleteAccount(jwttoken);
     }
 
-    public Flowable<Response<Object>> updateProfile(String jwttoken, UpdateProfile updateProfile) {
+    public Flowable<Response<HarisApiUpdateProfile>> updateProfile(String jwttoken, UpdateProfile updateProfile) {
         return mRemoteService.updateProfile(jwttoken, updateProfile);
     }
 
-    public Flowable<Response<ChatResponse>> getChat() {
-        return mRemoteService.getChat();
+    public Flowable<Response<HarisApiChat>> getChat(String jwttoken) {
+        return mRemoteService.getChat(jwttoken);
     }
 
-    public Flowable<Response<NewChatResponse>> newChat(String jwttoken, NewChatRequest newChatRequest) {
+    public Flowable<Response<HarisApiNewChat>> newChat(String jwttoken, NewChatRequest newChatRequest) {
         return mRemoteService.newChat(jwttoken, newChatRequest);
+    }
+
+    public Flowable<Response<Object>> sendFeedback(Feedback feedback, String jwttoken) {
+        return mRemoteService.sendFeedback(jwttoken, feedback);
     }
 
     public Flowable<Response<Object>> deleteChat(String jwttoken) {
@@ -76,7 +82,7 @@ public class RemoteDataSource {
         return mRemoteService.getRoute(jwttoken);
     }
 
-    public Flowable<Response<SendToChatResponse>> writeToChat(String jwttoken, Message message) {
+    public Flowable<Response<HarisApiWriteToChat>> writeToChat(String jwttoken, Message message) {
         return mRemoteService.writeToChat(jwttoken, message);
     }
 }

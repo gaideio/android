@@ -6,11 +6,15 @@
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/drawable/help.xml" value="0.213" />
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/drawable/info.xml" value="0.213" />
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/drawable/settings.xml" value="0.213" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_about.xml" value="0.3875" />
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_chat.xml" value="0.25" />
-        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_main.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_feedback.xml" value="0.22395833333333334" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_login.xml" value="0.3875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_main.xml" value="0.2513440860215054" />
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_messages.xml" value="0.3875" />
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_news.xml" value="0.3875" />
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_profile.xml" value="0.2671875" />
+        <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/activity_settings.xml" value="0.3875" />
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/app_bar_main.xml" value="0.3875" />
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/item_chat.xml" value="0.3875" />
         <entry key="..\:/Soft Development/tmp/android-mvp-architecture-example/app/src/main/res/layout/item_chat_me.xml" value="0.3875" />

@@ -2,25 +2,18 @@
  * ALL RIGHTS RESERVED
  */
 
-package com.example.mvp.androidmvparchitectureexample.data.remote.model.login;
+package com.example.mvp.androidmvparchitectureexample.data.remote.model.chat;
 
-public class LoginResponse {
+public class HarisApiNewChat {
+
     private String Confirmation;
     private String Error;
 
-    public LoginResponse() {
+    public HarisApiNewChat() {
     }
 
-    public LoginResponse(String confirmation, String error) {
+    public HarisApiNewChat(String confirmation, String error) {
         Confirmation = confirmation;
-        Error = error;
-    }
-
-    public String getError() {
-        return Error;
-    }
-
-    public void setError(String error) {
         Error = error;
     }
 
@@ -30,5 +23,13 @@ public class LoginResponse {
 
     public void setConfirmation(String confirmation) {
         Confirmation = confirmation;
+    }
+
+    public String getError() {
+        return Error;
+    }
+
+    public void setError(String error) {
+        Error = error;
     }
 }

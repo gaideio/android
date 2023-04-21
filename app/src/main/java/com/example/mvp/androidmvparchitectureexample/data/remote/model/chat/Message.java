@@ -5,17 +5,17 @@
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.chat;
 
 public class Message {
-    private String text;
+    private String Text;
 
     public Message(String text) {
-        this.text = text;
+        Text = text;
     }
 
     public String getText() {
-        return text;
+        return Text;
     }
 
     public void setText(String text) {
-        this.text = text;
+        Text = text;
     }
 }

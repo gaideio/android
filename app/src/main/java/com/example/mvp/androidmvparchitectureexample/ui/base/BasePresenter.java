@@ -1,15 +1,22 @@
-package com.example.mvp.androidmvparchitectureexample.ui.base;
-
-import io.reactivex.disposables.Disposable;
-
-/**
+/*
  * ALL RIGHTS RESERVED
  */
+
+package com.example.mvp.androidmvparchitectureexample.ui.base;
+
+import com.example.mvp.androidmvparchitectureexample.utils.Store;
+
+import io.reactivex.disposables.Disposable;
 
 public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     protected Disposable mDisposable;
     private V mView;
+
+    @Override
+    public Store getStore() {
+        return Store.getInstance();
+    }
 
     @Override
     public void attachView(V view) {
@@ -43,12 +50,10 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         }
     }
 
-
     public static class ViewNotAttachedException extends RuntimeException {
         public ViewNotAttachedException() {
             super("Please call Presenter.attachView(view) before" +
                     " requesting data to the Presenter");
         }
     }
-
 }

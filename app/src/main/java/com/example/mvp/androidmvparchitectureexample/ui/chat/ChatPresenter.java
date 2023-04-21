@@ -40,7 +40,7 @@ public class ChatPresenter extends BasePresenter<ContractChat.ContractView> impl
     public void getMessagesFromApi(String jwttoken, String email) {
         getView().showLoading();
 
-        mDisposable = mRemoteDataSource.getMessagesFromApi(jwttoken, email)
+        mDisposable = mRemoteDataSource.getChat(jwttoken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -51,7 +51,7 @@ public class ChatPresenter extends BasePresenter<ContractChat.ContractView> impl
                             getView().hideLoading();
 
                             if (response.isSuccessful()) {
-                                getView().onChatReady(Objects.requireNonNull(response.body()).getmMessages());
+                                getView().onChatReady(Objects.requireNonNull(response.body()).getChat());
                             } else {
                                 getView().onErrorLoadingChat();
                             }
@@ -82,6 +82,12 @@ public class ChatPresenter extends BasePresenter<ContractChat.ContractView> impl
                             getView().hideLoading();
                             Log.e(TAG, throwable.getMessage());
                         });
+    }
+
+
+    @Override
+    public void bigboy() {
+
     }
 
     @Override
@@ -115,10 +121,11 @@ public class ChatPresenter extends BasePresenter<ContractChat.ContractView> impl
                             if (!isViewAttached()) {
                                 return;
                             }
+
+                            getStore().setRoot(response.body());
                             getView().routeReady(response.body());
                         },
                         throwable -> {
-                            System.out.println("HREREREREREREREERR");
                             Log.e(TAG, throwable.getMessage());
                         });
     }

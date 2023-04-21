@@ -55,12 +55,13 @@ public class ProfilePresenter extends BasePresenter<ContractProfile.ContractView
                                 return;
                             }
 
-                            getView().hideLoading();
                             if (response.isSuccessful()) {
                                 Profile profile = new Profile();
-                                profile.setFullname(Objects.requireNonNull(response.body()).getFullname());
+                                profile.setName(Objects.requireNonNull(response.body()).getProfile().getName());
                                 getView().onProfileReady(profile);
                             }
+
+                            getView().hideLoading();
                         },
                         throwable -> {
                             getView().hideLoading();
@@ -74,11 +75,11 @@ public class ProfilePresenter extends BasePresenter<ContractProfile.ContractView
     }
 
     @Override
-    public void updateProfile(String jwttoken, String fullname) {
+    public void updateProfile(String jwttoken, String name) {
         getView().showLoading();
 
         UpdateProfile updateProfile = new UpdateProfile();
-        updateProfile.setFullname(fullname);
+        updateProfile.setName(name);
 
         mDisposable = mRemoteDataSource.updateProfile(jwttoken, updateProfile)
                 .subscribeOn(Schedulers.io())

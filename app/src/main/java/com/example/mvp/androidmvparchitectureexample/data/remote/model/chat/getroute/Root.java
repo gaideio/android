@@ -7,38 +7,30 @@ package com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.get
 import java.util.ArrayList;
 
 public class Root {
-    public ArrayList<Route> route;
-    public String error;
+    public ArrayList<Route> Route;
+    public String Error;
 
     public Root() {
     }
 
-    public Root(ArrayList<Route> route, String error) {
-        this.route = route;
-        this.error = error;
+    public Root(ArrayList<com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Route> route, String error) {
+        Route = route;
+        Error = error;
     }
 
-    public ArrayList<Route> getRoute() {
-        return route;
+    public ArrayList<com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Route> getRoute() {
+        return Route;
     }
 
-    public void setRoute(ArrayList<Route> route) {
-        this.route = route;
-    }
-
-    @Override
-    public String toString() {
-        return "Root{" +
-                "route=" + route +
-                ", error='" + error + '\'' +
-                '}';
+    public void setRoute(ArrayList<com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Route> route) {
+        Route = route;
     }
 
     public String getError() {
-        return error;
+        return Error;
     }
 
     public void setError(String error) {
-        this.error = error;
+        Error = error;
     }
 }

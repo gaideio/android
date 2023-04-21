@@ -5,19 +5,30 @@
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.profile;
 
 public class ProfileResponse {
-    private String fullname;
-//    private String email;
-//    private String error;
+    private HarisApiProfile Profile;
+    private String Error;
 
-    public ProfileResponse(String fullname) {
-        this.fullname = fullname;
+    public ProfileResponse(HarisApiProfile profile, String error) {
+        Profile = profile;
+        Error = error;
     }
 
-    public String getFullname() {
-        return fullname;
+    public ProfileResponse() {
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public HarisApiProfile getProfile() {
+        return Profile;
+    }
+
+    public void setProfile(HarisApiProfile profile) {
+        Profile = profile;
+    }
+
+    public String getError() {
+        return Error;
+    }
+
+    public void setError(String error) {
+        Error = error;
     }
 }

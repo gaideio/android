@@ -4,10 +4,10 @@
 
 package com.example.mvp.androidmvparchitectureexample.ui.chat;
 
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiNewChat;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiWriteToChat;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.Message;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.NewChatRequest;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.NewChatResponse;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.SendToChatResponse;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Root;
 import com.example.mvp.androidmvparchitectureexample.ui.base.IBaseView;
 
@@ -25,8 +25,9 @@ public interface ContractChat {
 
         void newChat(String jwttoken, NewChatRequest newChatRequest);
 
-        void getRoute(String jwttoken);
+        void bigboy();
 
+        void getRoute(String jwttoken);
 //        void getMessagesFromDb();
 //        void saveArticles(List<ArticleEntity> items);
     }
@@ -34,12 +35,12 @@ public interface ContractChat {
     interface ContractView extends IBaseView {
         void routeReady(Root root);
 
-        void onChatReady(List<Message> items);
+        void onChatReady(List<Message> messages);
 
         void onErrorLoadingChat();
 
-        void onCreateChatResponse(NewChatResponse newChatResponse);
+        void onCreateChatResponse(HarisApiNewChat harisApiNewChat);
 
-        void onWriteToChatResponseReceived(SendToChatResponse sendToChatResponse);
+        void onWriteToChatResponseReceived(HarisApiWriteToChat harisApiWriteToChat);
     }
 }

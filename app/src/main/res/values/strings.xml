@@ -1,4 +1,8 @@
-<resources>
+<!--
+  ~ ALL RIGHTS RESERVED
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">gaide.io</string>
     <string name="try_again_btn">Retry</string>
     <string name="message_error_has_occurred">An error has occurred</string>
@@ -15,14 +19,17 @@
     <string name="preferences_historicsites">Historic Sites</string>
     <string name="preferences_restaurants">Restaurants</string>
     <string name="preferences_culture">Culture</string>
-    <string name="profile_fullname">Enter your full name here</string>
+    <string name="profile_name">Enter your full name here</string>
     <string name="tap_mic_and_speek">Tap Mic and Speak</string>
     <string name="open">open</string>
     <string name="close">close</string>
-    <string name="lorem_ipsum">Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum</string>
+    <string name="lorem_ipsum" tools:ignore="Typos">Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum</string>
     <string name="web_client_id">634635040323-mebs8ivul587909omfjgcfmeppsu8ji8.apps.googleusercontent.com</string>
     <string name="server_client_id">634635040323-u6h3j09uml153ifr62ibqhlghl5gq9ao.apps.googleusercontent.com</string>
+    <string name="maps_api_key">AIzaSyAUOz-IQsjPvHbwZOoNISYCtkpL4ExX1M4</string>
+    <string name="maps_api_key_two">AIzaSyAL7gBGGYm7MB69mXXcySmmDfGzAqYbgvY</string>
     <string name="profile">Profile</string>
     <string name="new_chat">New chat</string>
     <string name="log_out">Log out</string>
+    <string name="about">Explore the world like never before with gaide.io, the revolutionary virtual tour guide app designed to make your travel experiences more immersive, personalized, and engaging. Our cutting-edge technology combines the prowess of GPT-based AI with advanced speech-to-text and text-to-speech functionalities, creating a seamless interaction that feels like you\'re conversing with a real guide. gaide.io understands your unique interests and curates tailored routes to help you discover the hidden gems and iconic landmarks of any city across the globe. Our app goes beyond just navigation, providing in-depth insights, local trivia, and personalized recommendations, allowing you to truly experience the essence of each destination. Engage in natural conversations with gaide.io, ask questions, and receive real-time responses, just as you would with a human guide. No matter your travel preferences, our app is designed to cater to a wide range of audiences, from history buffs and foodies to art enthusiasts and nature lovers. Make gaide.ioyour go-to travel companion and embark on unforgettable journeys that will leave you feeling inspired, informed, and connected to the places you visit. Rediscover the joy of exploration with the ultimate virtual tour guide right in your pocket.</string>
 </resources>

@@ -6,6 +6,7 @@ package com.example.mvp.androidmvparchitectureexample.ui.main;
 
 import android.content.Context;
 
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Root;
 import com.example.mvp.androidmvparchitectureexample.ui.base.IBaseView;
 
 public interface ContractMain {
@@ -19,6 +20,8 @@ public interface ContractMain {
 
         void goPreferences();
 
+        void getRoute(String jwttoken);
+
         void goProfile();
 
         void record();
@@ -26,5 +29,7 @@ public interface ContractMain {
 
     interface ContractView extends IBaseView {
         void onDeleteChat(boolean successful);
+
+        void routeReady(Root root);
     }
 }

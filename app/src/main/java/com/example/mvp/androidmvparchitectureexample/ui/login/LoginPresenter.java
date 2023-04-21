@@ -43,6 +43,8 @@ public class LoginPresenter extends BasePresenter<ContractLogin.ContractView> im
                             getView().hideLoading();
                             if (response.isSuccessful()) {
                                 getView().onLoginDone(Objects.requireNonNull(response.body()));
+                            } else {
+                                // TODO add error msg
                             }
                         },
                         throwable -> {

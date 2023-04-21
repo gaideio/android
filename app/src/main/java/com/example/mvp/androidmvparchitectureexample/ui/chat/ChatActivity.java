@@ -4,10 +4,8 @@
 
 package com.example.mvp.androidmvparchitectureexample.ui.chat;
 
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -15,7 +13,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -24,12 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mvp.androidmvparchitectureexample.GaideioApp;
 import com.example.mvp.androidmvparchitectureexample.R;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiNewChat;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiWriteToChat;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.Message;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.NewChatRequest;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.NewChatResponse;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.SendToChatResponse;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Itinerary;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Root;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Route;
 import com.example.mvp.androidmvparchitectureexample.ui.base.BaseActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -53,18 +51,18 @@ public class ChatActivity extends BaseActivity implements ContractChat.ContractV
     FloatingActionButton floatingActionButton;
     @BindView(R.id.newchatbtn)
     Button button;
+
+    @BindView(R.id.inputthingy)
+    EditText inputthingy;
+
     @Inject
     ChatPresenter mPresenter;
+
     private ChatAdapter chatAdapter;
     private List<Message> messages;
 
     private static boolean containsRouter(String text) {
         return text.contains("/router");
-    }
-
-    private String getJWTTokenFromSharedPreferences() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        return "Bearer " + prefs.getString("jwttoken", null);
     }
 
     @OnClick(R.id.postadd)
@@ -77,13 +75,8 @@ public class ChatActivity extends BaseActivity implements ContractChat.ContractV
             containsrouterflag = 1;
         }
 
-        mPresenter.writeToChat(getJWTTokenFromSharedPreferences(), message);
+        mPresenter.writeToChat(mPresenter.getStore().getAuthInfo().getJwttoken(), message);
         messages.add(message);
-        chatAdapter = new ChatAdapter(this, messages);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerview.setLayoutManager(mLayoutManager);
-        mRecyclerview.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        mRecyclerview.setAdapter(chatAdapter);
     }
 
     @Override
@@ -99,15 +92,11 @@ public class ChatActivity extends BaseActivity implements ContractChat.ContractV
     private void init() {
         getChat();
         displayChatMessages();
+        mPresenter.getRoute(mPresenter.getStore().getAuthInfo().getJwttoken());
     }
 
     private void getChat() {
-        mPresenter.getMessages(getJWTTokenFromSharedPreferences(), getEmailFromSharedPreferences());
-    }
-
-    private String getEmailFromSharedPreferences() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        return prefs.getString("email", null);
+        mPresenter.getMessages(mPresenter.getStore().getAuthInfo().getJwttoken(), mPresenter.getStore().getAuthInfo().getEmail());
     }
 
     private void displayChatMessages() {
@@ -116,6 +105,8 @@ public class ChatActivity extends BaseActivity implements ContractChat.ContractV
         mRecyclerview.setLayoutManager(mLayoutManager);
         mRecyclerview.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerview.setAdapter(chatAdapter);
+        int lastItemPosition = chatAdapter.getItemCount() - 1;
+        mLayoutManager.scrollToPosition(lastItemPosition);
     }
 
     @Override
@@ -126,17 +117,25 @@ public class ChatActivity extends BaseActivity implements ContractChat.ContractV
 
     @Override
     public void routeReady(Root root) {
-        String sumlocation = "";
+        StringBuilder sumlocation = new StringBuilder();
 
-        for (Itinerary itinerary : root.getRoute().get(0).getItinerary()) {
-            sumlocation = itinerary.getLocation() + " ";
+        for (Route route : root.getRoute()) {
+            sumlocation.append(route.getName()).append(" | ");
         }
 
-        Toast.makeText(this, sumlocation, Toast.LENGTH_SHORT).show();
+        TextView textView = findViewById(R.id.routetext);
+        textView.setText(sumlocation.toString());
+
+        mPresenter.bigboy();
+        mPresenter.getStore().setRoot(root);
     }
 
     @Override
     public void onChatReady(List<Message> items) {
+        for (Message message :
+                items) {
+            System.out.println(message);
+        }
         messages = items;
 
         if (items != null && !items.isEmpty()) {
@@ -155,10 +154,8 @@ public class ChatActivity extends BaseActivity implements ContractChat.ContractV
 
     private void showNewChatBtn() {
         button.setVisibility(View.VISIBLE);
-    }
-
-    private void preprompt() {
-
+        inputthingy.setVisibility(View.GONE);
+        floatingActionButton.hide();
     }
 
     @OnClick(R.id.newchatbtn)
@@ -167,28 +164,32 @@ public class ChatActivity extends BaseActivity implements ContractChat.ContractV
         newChatRequest.setLocation("Athens, Greece, Syntagma");
         newChatRequest.setTime("2 hours");
         newChatRequest.setTransport("Walking");
-        mPresenter.newChat(getJWTTokenFromSharedPreferences(), newChatRequest);
+        mPresenter.newChat(mPresenter.getStore().getAuthInfo().getJwttoken(), newChatRequest);
         button.setVisibility(View.GONE);
     }
 
     @Override
-    public void onCreateChatResponse(NewChatResponse newChatResponse) {
+    public void onCreateChatResponse(HarisApiNewChat harisApiNewChat) {
         init();
         button.setVisibility(View.GONE);
+        inputthingy.setVisibility(View.VISIBLE);
+        floatingActionButton.show();
     }
 
     @Override
-    public void onWriteToChatResponseReceived(SendToChatResponse sendToChatResponse) {
-        Message message = new Message(sendToChatResponse.getResponse());
+    public void onWriteToChatResponseReceived(HarisApiWriteToChat harisApiWriteToChat) {
+        Message message = new Message(harisApiWriteToChat.getResponse());
         messages.add(message);
         chatAdapter = new ChatAdapter(this, messages);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerview.setLayoutManager(mLayoutManager);
         mRecyclerview.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerview.setAdapter(chatAdapter);
+        int lastItemPosition = chatAdapter.getItemCount() - 1;
+        mLayoutManager.scrollToPosition(lastItemPosition);
 
         if (containsrouterflag == 1) {
-            mPresenter.getRoute(getJWTTokenFromSharedPreferences());
+            mPresenter.getRoute(mPresenter.getStore().getAuthInfo().getJwttoken());
         }
 
         containsrouterflag = 0;
@@ -212,6 +213,7 @@ public class ChatActivity extends BaseActivity implements ContractChat.ContractV
         display.getSize(size);
         window.setLayout((int) (size.x * 0.9), (int) (size.y * 0.75));
         window.setGravity(Gravity.CENTER);
+        displayChatMessages();
         super.onResume();
     }
 

@@ -5,28 +5,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#004AAD"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:padding="20pt">
 
-    <TextView
+    <EditText
+        android:id="@+id/subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2pt"
-        android:text="About"
-        android:textColor="@color/white"
-        android:textSize="10pt"
-        android:textStyle="bold" />
+        android:hint="Subject" />
 
-    <TextView
-        android:id="@+id/fulltext"
+    <EditText
+        android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"
-        android:text="@string/about"
-        android:textColor="@color/white"
-        android:textSize="15dp" />
+        android:hint="Message"
+        android:inputType="textMultiLine"
+        android:lines="5" />
+
+    <Button
+        android:id="@+id/sendbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send" />
 
 </LinearLayout>

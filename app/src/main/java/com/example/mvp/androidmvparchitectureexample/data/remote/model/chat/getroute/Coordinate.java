@@ -4,23 +4,31 @@
 
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute;
 
-import java.util.ArrayList;
-
 public class Coordinate {
-    public ArrayList<Location> location;
-
-    public Coordinate(ArrayList<Location> location) {
-        this.location = location;
-    }
+    private double lat;
+    private double lng;
 
     public Coordinate() {
     }
 
-    public ArrayList<Location> getLocation() {
-        return location;
+    public Coordinate(double lat, double lng) {
+        this.lat = lat;
+        this.lng = lng;
     }
 
-    public void setLocation(ArrayList<Location> location) {
-        this.location = location;
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }

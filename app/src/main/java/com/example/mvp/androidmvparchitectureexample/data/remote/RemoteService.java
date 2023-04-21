@@ -4,15 +4,17 @@
 
 package com.example.mvp.androidmvparchitectureexample.data.remote;
 
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.Feedback;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.Messages;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.News;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.ChatResponse;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiChat;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiNewChat;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.HarisApiWriteToChat;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.Message;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.NewChatRequest;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.NewChatResponse;
-import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.SendToChatResponse;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute.Root;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.login.ModelLoginRequest;
+import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.HarisApiUpdateProfile;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.Profile;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.ProfileResponse;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.UpdateProfile;
@@ -39,9 +41,13 @@ public interface RemoteService {
     @GET("/{email}/chat")
     Flowable<Response<Messages>> getMessagesFromApi(@Header("Authorization") String jwttoken, @Path("email") String email);
 
-    @POST("/writetochat")
+    @POST("/chat")
     @Headers("Content-Type: application/json")
-    Flowable<Response<SendToChatResponse>> writeToChat(@Header("Authorization") String jwttoken, @Body Message message);
+    Flowable<Response<HarisApiWriteToChat>> writeToChat(@Header("Authorization") String jwttoken, @Body Message message);
+
+    @POST("/feedback")
+    @Headers("Content-Type: application/json")
+    Flowable<Response<Object>> sendFeedback(@Header("Authorization") String jwttoken, @Body Feedback feedback);
 
     @POST("/login")
     @Headers("Content-Type: application/json")
@@ -56,7 +62,7 @@ public interface RemoteService {
 
     @POST("/updateprofile")
     @Headers("Content-Type: application/json")
-    Flowable<Response<Object>> updateProfile(@Header("Authorization") String jwttoken, @Body UpdateProfile updateProfile);
+    Flowable<Response<HarisApiUpdateProfile>> updateProfile(@Header("Authorization") String jwttoken, @Body UpdateProfile updateProfile);
 
     @DELETE("/deleteaccount")
     @Headers("Content-Type: application/json")
@@ -71,9 +77,9 @@ public interface RemoteService {
     Flowable<Response<Root>> getRoute(@Header("Authorization") String jwttoken);
 
     @GET("/chat")
-    Flowable<Response<ChatResponse>> getChat();
+    Flowable<Response<HarisApiChat>> getChat(@Header("Authorization") String jwttoken);
 
     @POST("/newchat")
     @Headers("Content-Type: application/json")
-    Flowable<Response<NewChatResponse>> newChat(@Header("Authorization") String jwttoken, @Body NewChatRequest newChatRequest);
+    Flowable<Response<HarisApiNewChat>> newChat(@Header("Authorization") String jwttoken, @Body NewChatRequest newChatRequest);
 }

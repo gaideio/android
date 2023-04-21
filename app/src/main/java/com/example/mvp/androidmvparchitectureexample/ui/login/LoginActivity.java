@@ -5,19 +5,19 @@
 package com.example.mvp.androidmvparchitectureexample.ui.login;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.example.mvp.androidmvparchitectureexample.GaideioApp;
 import com.example.mvp.androidmvparchitectureexample.R;
 import com.example.mvp.androidmvparchitectureexample.data.remote.model.profile.Profile;
 import com.example.mvp.androidmvparchitectureexample.ui.base.BaseActivity;
 import com.example.mvp.androidmvparchitectureexample.ui.main.MainActivity;
+import com.example.mvp.androidmvparchitectureexample.utils.AuthInfo;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginActivity extends BaseActivity implements ContractLogin.ContractView {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -41,11 +42,10 @@ public class LoginActivity extends BaseActivity implements ContractLogin.Contrac
 
     private GoogleSignInClient mGoogleSignInClient;
 
-    private void saveToSharedPreferences(GoogleSignInAccount account) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putString("email", account.getEmail()).apply();
-        prefs.edit().putString("fullname", account.getDisplayName()).apply();
-        prefs.edit().putString("imgURI", String.valueOf(account.getPhotoUrl())).apply();
+    private void saveToState(GoogleSignInAccount account) {
+        mPresenter.getStore().getAuthInfo().setEmail(account.getEmail());
+        mPresenter.getStore().getAuthInfo().setName(account.getDisplayName());
+        mPresenter.getStore().getAuthInfo().setImgURI(String.valueOf(account.getPhotoUrl()));
     }
 
     private void doLoginRequest(String googletoken) {
@@ -55,7 +55,7 @@ public class LoginActivity extends BaseActivity implements ContractLogin.Contrac
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            saveToSharedPreferences(account);
+            saveToState(account);
             doLoginRequest(account.getIdToken());
         } catch (ApiException e) {
             System.out.println(e.getMessage());
@@ -79,16 +79,13 @@ public class LoginActivity extends BaseActivity implements ContractLogin.Contrac
         GaideioApp.getLoginComponent().inject(this);
         mPresenter.attachView(this);
         ButterKnife.bind(this);
-        onResume();
         setUpGoogleSignIn();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean loggedinSharedprefs = prefs.getBoolean("loggedin", false);
-        if (loggedinSharedprefs) {
+        if (AuthInfo.isLoggedin()) {
             isAlreadyLoggedIn();
         }
     }
@@ -103,8 +100,7 @@ public class LoginActivity extends BaseActivity implements ContractLogin.Contrac
     }
 
     private void isAlreadyLoggedIn() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mPresenter.checkjwtforautologin("Bearer " + prefs.getString("jwttoken", null));
+        mPresenter.checkjwtforautologin(mPresenter.getStore().getAuthInfo().getJwttoken());
     }
 
     private void signIn() {
@@ -119,7 +115,7 @@ public class LoginActivity extends BaseActivity implements ContractLogin.Contrac
 
     @Override
     protected void onDestroy() {
-//        mPresenter.detachView();
+        mPresenter.detachView();
         super.onDestroy();
     }
 
@@ -135,16 +131,8 @@ public class LoginActivity extends BaseActivity implements ContractLogin.Contrac
 
     @Override
     public void onLoginDone(Profile profile) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putString("jwttoken", profile.getAccess_token()).apply();
-        prefs.edit().putBoolean("loggedin", true).apply();
-        Boolean isnew = profile.getIsnew();
-        if (isnew) {
-            Toast.makeText(this, "Signed up and logged In", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
-        }
-
+        mPresenter.getStore().getAuthInfo().setLoggedin(true);
+        mPresenter.getStore().getAuthInfo().setJwttoken(profile.getAccess_token());
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
     }

@@ -5,7 +5,6 @@
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.chat;
 
 public class NewChatRequest {
-
     private String location;
     private String transport;
     private String time;

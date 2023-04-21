@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
 android {
     compileSdk build_versions.target_sdk
@@ -15,11 +16,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", "\"http://3.121.183.167:8000\""
+            buildConfigField "String", "BASE_URL", "\"https://gaide-api.herokuapp.com\""
         }
 
         debug {
-            buildConfigField "String", "BASE_URL", "\"http://3.121.183.167:8000\""
+            buildConfigField "String", "BASE_URL", "\"https://gaide-api.herokuapp.com\""
         }
     }
 
@@ -41,7 +42,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.fragment:fragment:1.5.6'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
     testImplementation "junit:junit:$versions.junit"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$versions.espresso"
@@ -89,7 +90,18 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$versions.glide"
 
     // google maps
+//    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-base:18.2.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.maps:google-maps-services:2.1.2'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-panorama:17.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:2.2.0'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.gms:play-services-base:18.2.0'
+
+    implementation 'com.google.android.libraries.places:places:3.1.0'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
@@ -101,4 +113,6 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.shamanland:fonticon:0.1.9'
     implementation 'com.android.support:design:28.0.0'
+
+    implementation 'com.github.jd-alexander:library:1.1.0'
 }

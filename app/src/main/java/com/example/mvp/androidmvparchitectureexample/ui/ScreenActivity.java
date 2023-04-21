@@ -1,3 +1,7 @@
+/*
+ * ALL RIGHTS RESERVED
+ */
+
 package com.example.mvp.androidmvparchitectureexample.ui;
 
 import android.content.Intent;

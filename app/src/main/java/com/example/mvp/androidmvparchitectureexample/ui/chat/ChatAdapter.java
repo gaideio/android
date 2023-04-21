@@ -74,7 +74,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageHolder>
             this.messages = messages;
             notifyDataSetChanged();
         }
-
     }
 
     public class MessageHolder extends RecyclerView.ViewHolder {

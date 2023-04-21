@@ -1,3 +1,7 @@
+/*
+ * ALL RIGHTS RESERVED
+ */
+
 package com.example.mvp.androidmvparchitectureexample.ui.news;
 
 import android.content.Context;
@@ -15,10 +19,6 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-
-/**
- * ALL RIGHTS RESERVED
- */
 
 public class NewsPresenter extends BasePresenter<ContractNews.ContractView> implements ContractNews.ContractPresenter {
 

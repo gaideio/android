@@ -14,7 +14,7 @@ versions.archVersion = '1.1.1'
 ext.versions = versions
 
 def build_versions = [:]
-build_versions.min_sdk = 19
+build_versions.min_sdk = 21
 build_versions.target_sdk = 32
 build_versions.build_tools = "32.0.1"
 ext.build_versions = build_versions

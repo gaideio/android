@@ -4,34 +4,32 @@
 
 package com.example.mvp.androidmvparchitectureexample.data.remote.model.chat.getroute;
 
-import java.util.ArrayList;
-
 public class Route {
-    //    res: list[dict[str, list] | dict[str, list]] = [{"itinerary": []}, {"coordinates": []}]
-    public ArrayList<Itinerary> itinerary;
-    public ArrayList<Coordinate> coordinates;
-
-    public Route(ArrayList<Itinerary> itinerary, ArrayList<Coordinate> coordinates) {
-        this.itinerary = itinerary;
-        this.coordinates = coordinates;
-    }
+    public Coordinate coordinates;
+    public String name;
 
     public Route() {
     }
 
-    public ArrayList<Itinerary> getItinerary() {
-        return itinerary;
+
+    public Route(Coordinate coordinates, String name) {
+        this.coordinates = coordinates;
+        this.name = name;
     }
 
-    public void setItinerary(ArrayList<Itinerary> itinerary) {
-        this.itinerary = itinerary;
+    public String getName() {
+        return name;
     }
 
-    public ArrayList<Coordinate> getCoordinates() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Coordinate getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(ArrayList<Coordinate> coordinates) {
+    public void setCoordinates(Coordinate coordinates) {
         this.coordinates = coordinates;
     }
 }

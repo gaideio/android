@@ -14,7 +14,6 @@ import com.example.mvp.androidmvparchitectureexample.ui.base.BasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class MainPresenter extends BasePresenter<ContractMain.ContractView> implements ContractMain.ContractPresenter {
 
     private static final String TAG = MainPresenter.class.getSimpleName();
@@ -28,6 +27,24 @@ public class MainPresenter extends BasePresenter<ContractMain.ContractView> impl
     }
 
     public MainPresenter() {
+    }
+
+    @Override
+    public void getRoute(String jwttoken) {
+        mDisposable = mRemoteDataSource.getRoute(jwttoken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (!isViewAttached()) {
+                                return;
+                            }
+
+                            getStore().setRoot(response.body());
+                            getView().routeReady(response.body());
+                        },
+                        throwable -> {
+                            Log.e(TAG, throwable.getMessage());
+                        });
     }
 
     @Override

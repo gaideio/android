@@ -6,9 +6,7 @@ package com.example.mvp.androidmvparchitectureexample.ui.profile;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,9 +30,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+@SuppressLint("NonConstantResourceId")
 public class ProfileActivity extends BaseActivity implements ContractProfile.ContractView {
-
-    private static final String TAG = ProfileActivity.class.getSimpleName();
 
     @BindView(R.id.fulltext)
     EditText editText;
@@ -42,7 +39,7 @@ public class ProfileActivity extends BaseActivity implements ContractProfile.Con
     @BindView(R.id.profilepic)
     CircleImageView profilepic;
 
-    @BindView(R.id.fullname)
+    @BindView(R.id.name)
     TextView textView;
 
     @BindView(R.id.editbtn)
@@ -60,22 +57,10 @@ public class ProfileActivity extends BaseActivity implements ContractProfile.Con
     @Inject
     ProfilePresenter mPresenter;
 
-    private Profile profile;
-
-    private String getFullnameFromSharedPreferences() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        return prefs.getString("fullname", "");
-    }
-
-    private String getJWTTokenFromSharedPreferences() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        return "Bearer " + prefs.getString("jwttoken", null);
-    }
-
     @OnClick(R.id.editbtn)
     public void onEditButtonClicked() {
         editText.setVisibility(View.VISIBLE);
-        editText.setText(getFullnameFromSharedPreferences());
+        editText.setText(mPresenter.getStore().getAuthInfo().getName());
         textView.setVisibility(View.GONE);
         editText.setEnabled(true);
         editbtn.setVisibility(View.GONE);
@@ -104,7 +89,7 @@ public class ProfileActivity extends BaseActivity implements ContractProfile.Con
         savebtn.setVisibility(View.GONE);
         clearbtn.setVisibility(View.GONE);
         deletebtn.setVisibility(View.GONE);
-        mPresenter.updateProfile(getJWTTokenFromSharedPreferences(), String.valueOf(editText.getText()));
+        mPresenter.updateProfile(mPresenter.getStore().getAuthInfo().getJwttoken(), String.valueOf(editText.getText()));
     }
 
     @OnClick(R.id.deletebtn)
@@ -113,7 +98,7 @@ public class ProfileActivity extends BaseActivity implements ContractProfile.Con
         alert.setTitle("Delete");
         alert.setMessage("Are you sure you want to delete?");
         alert.setPositiveButton("Yes", (dialog, which) -> {
-            mPresenter.deleteAccount(getJWTTokenFromSharedPreferences());
+            mPresenter.deleteAccount(mPresenter.getStore().getAuthInfo().getJwttoken());
             dialog.dismiss();
         });
 
@@ -125,7 +110,6 @@ public class ProfileActivity extends BaseActivity implements ContractProfile.Con
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        profile = new Profile();
 
         ButterKnife.bind(this);
         GaideioApp.getProfileComponent().inject(this);
@@ -142,10 +126,9 @@ public class ProfileActivity extends BaseActivity implements ContractProfile.Con
 
     @Override
     protected void setUp() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String fullname = prefs.getString("fullname", "");
-        String imgURI = prefs.getString("imgURI", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png");
-        textView.setText(fullname);
+        String name = mPresenter.getStore().getAuthInfo().getName();
+        String imgURI = mPresenter.getStore().getAuthInfo().getImgURI();
+        textView.setText(name);
         Glide.with(this)
                 .load(imgURI)
                 .override(200, 200)
@@ -167,20 +150,16 @@ public class ProfileActivity extends BaseActivity implements ContractProfile.Con
     @SuppressLint("CheckResult")
     @Override
     public void onProfileReady(Profile profile) {
-        this.profile = profile;
-
-        textView.setText(profile.getFullname());
-        editText.setText(profile.getFullname());
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putString("fullname", String.valueOf(profile.getFullname())).apply();
+        textView.setText(profile.getName());
+        editText.setText(profile.getName());
+        mPresenter.getStore().getAuthInfo().setName(profile.getName());
         Toast.makeText(this, "Profile successfully updated", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onProfileUpdated(Boolean isUpdateSuccessful) {
         if (isUpdateSuccessful) {
-            mPresenter.getProfile(this, getJWTTokenFromSharedPreferences());
+            mPresenter.getProfile(this, mPresenter.getStore().getAuthInfo().getJwttoken());
         } else {
             Toast.makeText(this, "Could not update profile succesffully", Toast.LENGTH_SHORT).show();
         }
@@ -188,7 +167,7 @@ public class ProfileActivity extends BaseActivity implements ContractProfile.Con
 
     @Override
     public void onAccountDeleted(Boolean isAccountDeleted) {
-        PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
+        mPresenter.getStore().getAuthInfo().clear();
         Toast.makeText(this, "Your accout is deleted", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(i);
